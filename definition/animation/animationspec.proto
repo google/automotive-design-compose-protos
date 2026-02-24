@@ -1,0 +1,102 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
+
+package designcompose.definition.animation;
+
+// Animation specification.
+message AnimationSpec {
+    optional google.protobuf.Duration initial_delay = 1;
+    Animations animation = 2;
+    optional StopType interrupt_type = 3;
+    map<string, string> custom_keyframe_data = 4;
+}
+
+// Specifies how to interrupt in-progress animations.
+message StopType {
+    oneof type {
+        google.protobuf.Empty reset_to_start = 1;
+        google.protobuf.Empty complete = 2;
+        float complete_with_progress = 3;
+        google.protobuf.Empty stop = 4;
+    }
+}
+
+// Animation types
+message Animations {
+    oneof type {
+        SmoothAnimation smooth = 1;
+        KeyFrameAnimation key_frame = 2;
+    }
+}
+
+// A smooth animation.
+message SmoothAnimation {
+    google.protobuf.Duration duration = 1;
+    RepeatType repeat_type = 2;
+    Easing easing = 3;
+}
+
+// Animation consist of key frames.
+message KeyFrameAnimation {
+    repeated KeyFrame steps = 1;
+    RepeatType repeat_type = 2;
+}
+
+// Specifies the animation repeat type.
+message RepeatType {
+    oneof type {
+        google.protobuf.Empty no_repeat = 1;
+        uint32 repeat = 2;
+        google.protobuf.Empty loop_forever = 3;
+    }
+}
+
+// A key frame in a key frame animation.
+message KeyFrame {
+    float value = 1;
+    google.protobuf.Duration duration = 2;
+}
+
+// Configures the animation easing curve.
+message Easing {
+    oneof type {
+        google.protobuf.Empty linear = 1;
+        BezierCurve bezier = 2;
+    }
+}
+
+// A Bezier curve
+message BezierCurve {
+    float p0 = 1;
+    float p1 = 2;
+    float p2 = 3;
+    float p3 = 4;
+}
+
+// The main override type.
+// - no_override: to use the default
+// - disable_animations: to disregard any default animations
+// - custom: specify a custom AnimationSpec
+message AnimationOverride {
+    oneof animation_override {
+        google.protobuf.Empty no_override = 1;
+        google.protobuf.Empty disable_animations = 2;
+        AnimationSpec custom = 3;
+    }
+}
