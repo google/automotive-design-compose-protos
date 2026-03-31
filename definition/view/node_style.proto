@@ -32,6 +32,7 @@ import "definition/modifier/matrix_transform.proto";
 import "definition/modifier/shadow.proto";
 import "definition/modifier/text.proto";
 import "definition/plugin/meter_data.proto";
+import "definition/animation/animationspec.proto";
 
 option java_multiple_files = true;
 option java_package = "com.android.designcompose.definition.view";
@@ -46,7 +47,7 @@ enum Display {
 
 // Contains all of the styleable parameters accepted by the Rect and Text
 // components.
-// Next id = 46
+// Next id = 47
 message NodeStyle {
   // Text properties
   element.Background text_color = 1[deprecated = true];
@@ -107,4 +108,5 @@ message NodeStyle {
   optional element.ShaderData shader_data = 43;
 
   optional element.ScalableUIData scalable_data = 44;
+  optional animation.AnimationOverride animation_override = 46;
 }
