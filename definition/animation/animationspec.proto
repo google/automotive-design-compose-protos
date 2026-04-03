@@ -19,12 +19,25 @@ import "google/protobuf/empty.proto";
 
 package designcompose.definition.animation;
 
+// A keyframe within a custom property timeline.
+message CustomKeyframe {
+    float fraction = 1;
+    string value_json = 2; // Escaped JSON capturing the value
+    Easing easing = 3;
+}
+
+// A sequence of keyframes for an arbitrary property.
+message CustomTimeline {
+    Easing target_easing = 1;
+    repeated CustomKeyframe keyframes = 2;
+}
+
 // Animation specification.
 message AnimationSpec {
     optional google.protobuf.Duration initial_delay = 1;
     Animations animation = 2;
     optional StopType interrupt_type = 3;
-    map<string, string> custom_keyframe_data = 4;
+    map<string, CustomTimeline> custom_keyframe_data = 4;
 }
 
 // Specifies how to interrupt in-progress animations.
