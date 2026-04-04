@@ -19,7 +19,8 @@ import "google/protobuf/empty.proto";
 
 package designcompose.definition.animation;
 
-// Strongly typed keyframe values.
+// Represents a color with red, green, blue, and alpha channels.
+// Values are typically in the range 0-255.
 message RgbaValue {
     uint32 r = 1;
     uint32 g = 2;
@@ -27,15 +28,21 @@ message RgbaValue {
     uint32 a = 4;
 }
 
+// Represents a single color stop in a gradient.
 message GradientStopValue {
+    // Position of the stop from 0.0 to 1.0.
     float position = 1;
+    // Color at this stop.
     RgbaValue color = 2;
 }
 
+// Represents a gradient with a collection of color stops.
 message GradientValue {
+    // List of stops defining the gradient.
     repeated GradientStopValue stops = 1;
 }
 
+// Represents the corner radii for a rectangle or surface.
 message CornerRadiiValue {
     float top_left = 1;
     float top_right = 2;
@@ -43,6 +50,7 @@ message CornerRadiiValue {
     float bottom_left = 4;
 }
 
+// Represents parameters for drawing an arc or partial circle.
 message ArcDataValue {
     float starting_angle = 1;
     float ending_angle = 2;
@@ -50,26 +58,37 @@ message ArcDataValue {
 }
 
 // Strongly typed union of property values animated by the Squoosh engine.
+// This replaces the legacy JSON serialization of keyframe values.
 message CustomKeyframeValue {
     oneof value {
+        // For floating point properties like opacity, translation, etc.
         float scalar = 1;
+        // For corner radius animations.
         CornerRadiiValue radii = 2;
+        // For solid color fill animations.
         RgbaValue color = 3;
+        // For gradient fill animations.
         GradientValue gradient = 4;
-        ArcDataValue arc = 5;
+        // For arc data animations.
+        ArcDataValue arc = 5;// For arc data animations.
     }
 }
 
 // A keyframe within a custom property timeline.
 message CustomKeyframe {
+    // Progress fraction from 0.0 to 1.0.
     float fraction = 1;
-    CustomKeyframeValue value = 2; // Full typed structure payload
+    // The strongly-typed value at this keyframe.
+    CustomKeyframeValue value = 2;
+    // Easing to use when interpolating from this keyframe.
     Easing easing = 3;
 }
 
-// A sequence of keyframes for an arbitrary property.
+// A sequence of keyframes for an arbitrary property on a node.
 message CustomTimeline {
+    // Default easing for the entire timeline.
     Easing target_easing = 1;
+    // Chronological sequence of keyframes.
     repeated CustomKeyframe keyframes = 2;
 }
 
