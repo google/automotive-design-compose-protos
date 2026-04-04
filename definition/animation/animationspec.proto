@@ -19,10 +19,51 @@ import "google/protobuf/empty.proto";
 
 package designcompose.definition.animation;
 
+// Strongly typed keyframe values.
+message RgbaValue {
+    uint32 r = 1;
+    uint32 g = 2;
+    uint32 b = 3;
+    uint32 a = 4;
+}
+
+message GradientStopValue {
+    float position = 1;
+    RgbaValue color = 2;
+}
+
+message GradientValue {
+    repeated GradientStopValue stops = 1;
+}
+
+message CornerRadiiValue {
+    float top_left = 1;
+    float top_right = 2;
+    float bottom_right = 3;
+    float bottom_left = 4;
+}
+
+message ArcDataValue {
+    float starting_angle = 1;
+    float ending_angle = 2;
+    float inner_radius = 3;
+}
+
+// Strongly typed union of property values animated by the Squoosh engine.
+message CustomKeyframeValue {
+    oneof value {
+        float scalar = 1;
+        CornerRadiiValue radii = 2;
+        RgbaValue color = 3;
+        GradientValue gradient = 4;
+        ArcDataValue arc = 5;
+    }
+}
+
 // A keyframe within a custom property timeline.
 message CustomKeyframe {
     float fraction = 1;
-    string value_json = 2; // Escaped JSON capturing the value
+    CustomKeyframeValue value = 2; // Full typed structure payload
     Easing easing = 3;
 }
 
