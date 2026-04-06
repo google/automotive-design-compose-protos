@@ -52,8 +52,11 @@ message CornerRadiiValue {
 
 // Represents parameters for drawing an arc or partial circle.
 message ArcDataValue {
+    // Starting angle in radians.
     float starting_angle = 1;
+    // Ending angle in radians.
     float ending_angle = 2;
+    // Inner radius (scale of 0 to 1).
     float inner_radius = 3;
 }
 
@@ -62,6 +65,7 @@ message ArcDataValue {
 message CustomKeyframeValue {
     oneof value {
         // For floating point properties like opacity, translation, etc.
+        // Rotation values are typically in degrees when coming from Figma.
         float scalar = 1;
         // For corner radius animations.
         CornerRadiiValue radii = 2;
@@ -70,7 +74,7 @@ message CustomKeyframeValue {
         // For gradient fill animations.
         GradientValue gradient = 4;
         // For arc data animations.
-        ArcDataValue arc = 5;// For arc data animations.
+        ArcDataValue arc = 5;
     }
 }
 
