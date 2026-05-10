@@ -98,4 +98,5 @@ message Background {
     google.protobuf.Empty clear = 7;
     // DiamondGradient support possibly in the future.
   }
+  float opacity = 8;
 }
