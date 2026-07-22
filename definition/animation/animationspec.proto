@@ -166,14 +166,30 @@ message BezierCurve {
     float p3 = 4;
 }
 
+message TransitionSpec {
+    string from_variant = 1;
+    string to_variant = 2;
+    string animation_name = 3;
+    optional AnimationSpec spec = 4;
+    map<string, CustomTimeline> timelines = 5;
+}
+
+// A matrix of available transition specs for a component pair.
+message AnimationMatrix {
+    optional AnimationSpec default_spec = 1;
+    repeated TransitionSpec transitions = 2;
+}
+
 // The main override type.
 // - no_override: to use the default
 // - disable_animations: to disregard any default animations
 // - custom: specify a custom AnimationSpec
+// - matrix: specify an explicit matrix of origin-aware transitions
 message AnimationOverride {
     oneof animation_override {
         google.protobuf.Empty no_override = 1;
         google.protobuf.Empty disable_animations = 2;
         AnimationSpec custom = 3;
+        AnimationMatrix matrix = 4;
     }
 }
