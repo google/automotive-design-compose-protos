@@ -1,0 +1,24 @@
+package com.google.automotive.design.examples
+
+import com.google.automotive.design.v1.ThemeConfiguration
+import com.google.automotive.design.v1.ThemeConfiguration.*
+
+fun createDefaultThemeConfig(): ThemeConfiguration {
+    return ThemeConfiguration.newBuilder()
+        .setColorMode(ColorMode.AUTO)
+        .setDynamicColors(
+            DynamicColorOptions.newBuilder()
+                .setEnabled(true)
+                .setSourceColor(
+                    DynamicColorOptions.SourceColor.newBuilder()
+                        .setRed(33)
+                        .setGreen(150)
+                        .setBlue(243)
+                        .build()
+                )
+                .setHarmonyType(DynamicColorOptions.ColorHarmony.ANALOGOUS)
+                .build()
+        )
+        .setVariant(ThemeVariant.DEFAULT)
+        .build()
+}

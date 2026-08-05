@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package automotive.design.v1;
+
+option java_multiple_files = true;
+option java_package = "com.google.automotive.design.v1";
+
+// Defines theme configuration for automotive UI components
+message ThemeConfiguration {
+  // Color scheme mode
+  enum ColorMode {
+    COLOR_MODE_UNSPECIFIED = 0;
+    LIGHT = 1;
+    DARK = 2;
+    AUTO = 3;  // System default
+  }
+
+  // Dynamic color generation options
+  message DynamicColorOptions {
+    bool enabled = 1;
+    // Source color for dynamic palette generation
+    message SourceColor {
+      int32 red = 1;
+      int32 green = 2;
+      int32 blue = 3;
+    }
+    SourceColor source_color = 2;
+    // Harmony rules for generating color variations
+    enum ColorHarmony {
+      HARMONY_UNSPECIFIED = 0;
+      ANALOGOUS = 1;
+      COMPLEMENTARY = 2;
+      TRIADIC = 3;
+    }
+    ColorHarmony harmony_type = 3;
+  }
+
+  // Theme configuration properties
+  ColorMode color_mode = 1;
+  DynamicColorOptions dynamic_colors = 2;
+  
+  // Theme variants for different contexts
+  enum ThemeVariant {
+    VARIANT_UNSPECIFIED = 0;
+    DEFAULT = 1;
+    HIGH_CONTRAST = 2;
+    ENERGY_SAVER = 3;  // Optimized for OLED displays
+  }
+  ThemeVariant variant = 3;
+}
