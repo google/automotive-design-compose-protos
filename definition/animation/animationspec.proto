@@ -167,8 +167,8 @@ message BezierCurve {
 }
 
 message TransitionSpec {
-    string from_variant = 1;
-    string to_variant = 2;
+    string source_variant = 1;
+    string target_variant = 2;
     string animation_name = 3;
     optional AnimationSpec spec = 4;
     map<string, CustomTimeline> timelines = 5;
