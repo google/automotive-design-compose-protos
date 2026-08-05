@@ -166,14 +166,38 @@ message BezierCurve {
     float p3 = 4;
 }
 
+// Represents a single transition specification between variant states.
+message TransitionSpec {
+    // The origin variant state name or wildcard ("*") for any-to-one transitions.
+    string source_variant = 1;
+    // The destination variant state name.
+    string target_variant = 2;
+    // Custom animation identifier (defaults to "Default").
+    string animation_name = 3;
+    // Optional animation specification (delay, duration, easing, repeat behavior).
+    optional AnimationSpec spec = 4;
+    // Map of property names to custom keyframe timelines for this transition.
+    map<string, CustomTimeline> timelines = 5;
+}
+
+// A matrix of available transition specs for a component pair.
+message AnimationMatrix {
+    // Default animation spec fallback across all transitions in this matrix.
+    optional AnimationSpec default_spec = 1;
+    // Array of explicit transition specifications evaluated in cascade order.
+    repeated TransitionSpec transitions = 2;
+}
+
 // The main override type.
 // - no_override: to use the default
 // - disable_animations: to disregard any default animations
 // - custom: specify a custom AnimationSpec
+// - matrix: specify an explicit matrix of origin-aware transitions
 message AnimationOverride {
     oneof animation_override {
         google.protobuf.Empty no_override = 1;
         google.protobuf.Empty disable_animations = 2;
         AnimationSpec custom = 3;
+        AnimationMatrix matrix = 4;
     }
 }
